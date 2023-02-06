@@ -1,24 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useRef, useState} from 'react';
 import './App.css';
+import MapGL from "./containers/MapGl";
+import {ViewState, ViewStateChangeEvent} from "react-map-gl";
+import MapLayers from "./components/MapLayers/MapLayers";
+
+
+const DEFAULT_VIEWSTATE: ViewState = {
+  longitude: 19.833549,
+  latitude: 45.267136,
+  zoom: 11,
+  bearing: 0,
+  pitch: 0,
+  padding: {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  }
+}
 
 function App() {
+  const [viewState, setViewState] = useState<ViewState>(DEFAULT_VIEWSTATE);
+  const mapRef = useRef<any>();
+
+  const onViewStateChange = (viewState: ViewStateChangeEvent) => {
+    setViewState(viewState.viewState);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MapGL
+        {...viewState}
+        onMove={onViewStateChange}
+        ref={mapRef}
+      >
+        <MapLayers />
+      </MapGL>
     </div>
   );
 }
