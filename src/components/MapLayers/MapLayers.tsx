@@ -30,7 +30,7 @@ const borderLayerStyle: LayerProps = {
   }
 };
 
-const MapLayers = () => {
+const MapLayers = React.memo(() => {
   const [districts, setDistricts] = useState<GeoJSON.FeatureCollection<GeoJSON.Polygon>>();
 
   useEffect(() => {
@@ -50,6 +50,6 @@ const MapLayers = () => {
       </Source>
     </>
   )
-}
+})
 
 export default MapLayers;
